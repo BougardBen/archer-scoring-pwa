@@ -1,36 +1,20 @@
 import { useState } from "react";
 
+const saveState = (newState) => {
+  localStorage.setItem("archersData", JSON.stringify(newState));
+};
+
 const ArcherScoringApp = () => {
   // État pour stocker les archers avec une structure de score plus détaillée
-  const [archers, setArchers] = useState([
-    {
-      id: 1,
-      name: "Archer 1",
-      totalScore: 0,
-      targets: Array(21)
-        .fill()
-        .map(() => ({
-          points: [],
-          subtotal: 0,
-        })),
-    },
-    {
-      id: 2,
-      name: "Archer 2",
-      totalScore: 0,
-      targets: Array(21)
-        .fill()
-        .map(() => ({
-          points: [],
-          subtotal: 0,
-        })),
-    },
-    // Répéter pour les 10 archers...
-    ...Array(8)
-      .fill()
-      .map((_, index) => ({
-        id: index + 3,
-        name: `Archer ${index + 3}`,
+  const [archers, setArchers] = useState(() => {
+    const savedData = localStorage.getItem("archersData");
+    if (savedData) {
+      return JSON.parse(savedData);
+    }
+    return [
+      {
+        id: 1,
+        name: "Archer 1",
         totalScore: 0,
         targets: Array(21)
           .fill()
@@ -38,8 +22,34 @@ const ArcherScoringApp = () => {
             points: [],
             subtotal: 0,
           })),
-      })),
-  ]);
+      },
+      {
+        id: 2,
+        name: "Archer 2",
+        totalScore: 0,
+        targets: Array(21)
+          .fill()
+          .map(() => ({
+            points: [],
+            subtotal: 0,
+          })),
+      },
+      // Répéter pour les 10 archers...
+      ...Array(8)
+        .fill()
+        .map((_, index) => ({
+          id: index + 3,
+          name: `Archer ${index + 3}`,
+          totalScore: 0,
+          targets: Array(21)
+            .fill()
+            .map(() => ({
+              points: [],
+              subtotal: 0,
+            })),
+        })),
+    ];
+  });
 
   // États pour la navigation et la sélection
   const [currentScreen, setCurrentScreen] = useState("main");
@@ -48,41 +58,41 @@ const ArcherScoringApp = () => {
 
   // Fonctions de réinitialisation (restent les mêmes)
   const resetAllScores = () => {
-    setArchers(
-      archers.map((archer) => ({
-        ...archer,
-        totalScore: 0,
-        targets: Array(21)
-          .fill()
-          .map(() => ({
-            points: [],
-            subtotal: 0,
-          })),
-      }))
-    );
-  };
-
-  const resetScores = () => {
-    setArchers(
-      archers.map((archer) => ({
-        ...archer,
-        totalScore: 0,
-        targets: archer.targets.map((target) => ({
-          ...target,
+    const newState = archers.map((archer) => ({
+      ...archer,
+      totalScore: 0,
+      targets: Array(21)
+        .fill()
+        .map(() => ({
           points: [],
           subtotal: 0,
         })),
-      }))
-    );
+    }));
+    setArchers(newState);
+    saveState(newState);
+  };
+
+  const resetScores = () => {
+    const newState = archers.map((archer) => ({
+      ...archer,
+      totalScore: 0,
+      targets: archer.targets.map((target) => ({
+        ...target,
+        points: [],
+        subtotal: 0,
+      })),
+    }));
+    setArchers(newState);
+    saveState(newState);
   };
 
   // Fonction pour modifier le nom d'un archer (reste la même)
   const updateArcherName = (id, newName) => {
-    setArchers(
-      archers.map((archer) =>
-        archer.id === id ? { ...archer, name: newName } : archer
-      )
+    const newState = archers.map((archer) =>
+      archer.id === id ? { ...archer, name: newName } : archer
     );
+    setArchers(newState);
+    saveState(newState);
     setEditingArcherId(null);
   };
 
@@ -92,6 +102,10 @@ const ArcherScoringApp = () => {
 
     // Ajouter un point à une cible spécifique
     const addPointToTarget = (targetIndex, point) => {
+      if (localArcher.targets[targetIndex].points.length >= 2) {
+        return; // Limite à 2 points par cible
+      }
+
       const updatedTargets = [...localArcher.targets];
       updatedTargets[targetIndex].points.push(point);
 
@@ -106,7 +120,6 @@ const ArcherScoringApp = () => {
         0
       );
 
-      // Mettre à jour l'archer local
       const updatedArcher = {
         ...localArcher,
         targets: updatedTargets,
@@ -114,12 +127,13 @@ const ArcherScoringApp = () => {
       };
       setLocalArcher(updatedArcher);
 
-      // Mettre à jour dans la liste globale des archers
-      setArchers(
-        archers.map((a) => (a.id === selectedArcher.id ? updatedArcher : a))
+      // Mettre à jour dans la liste globale des archers et sauvegarder
+      const newArchersState = archers.map((a) =>
+        a.id === selectedArcher.id ? updatedArcher : a
       );
+      setArchers(newArchersState);
+      saveState(newArchersState);
     };
-
     // Supprimer le dernier point ajouté à une cible
     const removeLastPoint = (targetIndex) => {
       const updatedTargets = [...localArcher.targets];
@@ -145,10 +159,12 @@ const ArcherScoringApp = () => {
         };
         setLocalArcher(updatedArcher);
 
-        // Mettre à jour dans la liste globale des archers
-        setArchers(
-          archers.map((a) => (a.id === selectedArcher.id ? updatedArcher : a))
+        // Mettre à jour dans la liste globale des archers et sauvegarder
+        const newArchersState = archers.map((a) =>
+          a.id === selectedArcher.id ? updatedArcher : a
         );
+        setArchers(newArchersState);
+        saveState(newArchersState);
       }
     };
 
@@ -282,7 +298,7 @@ const ArcherScoringApp = () => {
           className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
           onClick={resetAllScores}
         >
-          Reset Tout
+          Reset All
         </button>
         <button
           className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition"
