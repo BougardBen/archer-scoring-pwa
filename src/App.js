@@ -55,8 +55,7 @@ const ArcherScoringApp = () => {
   const [currentScreen, setCurrentScreen] = useState("main");
   const [selectedArcher, setSelectedArcher] = useState(null);
   const [editingArcherId, setEditingArcherId] = useState(null);
-
-  // Fonctions de réinitialisation (restent les mêmes)
+  // Fonctions de réinitialisation
   const resetAllScores = () => {
     const newState = archers.map((archer) => ({
       ...archer,
@@ -86,7 +85,6 @@ const ArcherScoringApp = () => {
     saveState(newState);
   };
 
-  // Fonction pour modifier le nom d'un archer (reste la même)
   const updateArcherName = (id, newName) => {
     const newState = archers.map((archer) =>
       archer.id === id ? { ...archer, name: newName } : archer
@@ -100,21 +98,18 @@ const ArcherScoringApp = () => {
   const ArcherScoringScreen = () => {
     const [localArcher, setLocalArcher] = useState({ ...selectedArcher });
 
-    // Ajouter un point à une cible spécifique
     const addPointToTarget = (targetIndex, point) => {
       if (localArcher.targets[targetIndex].points.length >= 2) {
-        return; // Limite à 2 points par cible
+        return;
       }
 
       const updatedTargets = [...localArcher.targets];
       updatedTargets[targetIndex].points.push(point);
 
-      // Recalculer le sous-total de la cible
       updatedTargets[targetIndex].subtotal = updatedTargets[
         targetIndex
       ].points.reduce((a, b) => a + b, 0);
 
-      // Recalculer le score total
       const newTotalScore = updatedTargets.reduce(
         (total, target) => total + target.subtotal,
         0
@@ -127,31 +122,27 @@ const ArcherScoringApp = () => {
       };
       setLocalArcher(updatedArcher);
 
-      // Mettre à jour dans la liste globale des archers et sauvegarder
       const newArchersState = archers.map((a) =>
         a.id === selectedArcher.id ? updatedArcher : a
       );
       setArchers(newArchersState);
       saveState(newArchersState);
     };
-    // Supprimer le dernier point ajouté à une cible
+
     const removeLastPoint = (targetIndex) => {
       const updatedTargets = [...localArcher.targets];
       if (updatedTargets[targetIndex].points.length > 0) {
         updatedTargets[targetIndex].points.pop();
 
-        // Recalculer le sous-total de la cible
         updatedTargets[targetIndex].subtotal = updatedTargets[
           targetIndex
         ].points.reduce((a, b) => a + b, 0);
 
-        // Recalculer le score total
         const newTotalScore = updatedTargets.reduce(
           (total, target) => total + target.subtotal,
           0
         );
 
-        // Mettre à jour l'archer local
         const updatedArcher = {
           ...localArcher,
           targets: updatedTargets,
@@ -159,7 +150,6 @@ const ArcherScoringApp = () => {
         };
         setLocalArcher(updatedArcher);
 
-        // Mettre à jour dans la liste globale des archers et sauvegarder
         const newArchersState = archers.map((a) =>
           a.id === selectedArcher.id ? updatedArcher : a
         );
@@ -173,7 +163,10 @@ const ArcherScoringApp = () => {
         <div className="flex justify-between items-center mb-6">
           <button
             className="bg-gray-500 text-white px-3 py-2 rounded"
-            onClick={() => setCurrentScreen("main")}
+            onClick={() => {
+              setCurrentScreen("main");
+              saveState(archers);
+            }}
           >
             ← Retour
           </button>
@@ -236,8 +229,6 @@ const ArcherScoringApp = () => {
       </div>
     );
   };
-
-  // Composant de l'écran principal (reste le même que dans la version précédente)
   const MainScreen = () => (
     <div className="p-4 bg-gray-100 min-h-screen">
       <h1 className="text-2xl font-bold text-center mb-6">
@@ -258,6 +249,7 @@ const ArcherScoringApp = () => {
                       updateArcherName(archer.id, e.target.value);
                     } else if (e.key === "Escape") {
                       setEditingArcherId(null);
+                      saveState(archers);
                     }
                   }}
                   onBlur={(e) => updateArcherName(archer.id, e.target.value)}
@@ -268,8 +260,10 @@ const ArcherScoringApp = () => {
               <div
                 className="cursor-pointer hover:bg-gray-50 transition"
                 onClick={() => {
-                  setSelectedArcher(archer);
+                  const newState = { ...archer };
+                  setSelectedArcher(newState);
                   setCurrentScreen("scoring");
+                  saveState(archers);
                 }}
               >
                 <div className="flex justify-between items-center">
@@ -279,6 +273,7 @@ const ArcherScoringApp = () => {
                     onClick={(e) => {
                       e.stopPropagation();
                       setEditingArcherId(archer.id);
+                      saveState(archers);
                     }}
                   >
                     ✏️
@@ -310,7 +305,6 @@ const ArcherScoringApp = () => {
     </div>
   );
 
-  // Rendu principal de l'application
   return (
     <>
       {currentScreen === "main" && <MainScreen />}
