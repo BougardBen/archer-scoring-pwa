@@ -2,7 +2,7 @@
   "name": "archer-scoring-pwa",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://BougardBen.github.io/archer-scoring-pwa",
+  "homepage": "https://BougardBen.github.io/archer-scoring-pwa/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
