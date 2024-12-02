@@ -1,12 +1,12 @@
 /* eslint-disable no-restricted-globals */
 const CACHE_NAME = "archer-scoring-v1";
 const urlsToCache = [
-  "/archer-scoring-pwa/",
-  "/archer-scoring-pwa/index.html",
-  "/archer-scoring-pwa/manifest.json",
-  "/archer-scoring-pwa/logo192.png",
-  "/archer-scoring-pwa/logo512.png",
-  "/archer-scoring-pwa/favicon.ico",
+  "./",
+  "./index.html",
+  "./manifest.json",
+  "./logo192.png",
+  "./logo512.png",
+  "./favicon.ico",
 ];
 
 // Installation du service worker
