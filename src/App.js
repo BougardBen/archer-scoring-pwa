@@ -1,15 +1,18 @@
 import { useState } from "react";
 
 const saveState = (newState) => {
-  console.log("Saving state:", newState); // Nouveau
-  localStorage.setItem("archersData", JSON.stringify(newState));
+  window.localStorage.setItem("archersData", JSON.stringify(newState));
+  console.log("%c State Saved:", "background: #222; color: #bada55", newState);
 };
 const ArcherScoringApp = () => {
   // État pour stocker les archers avec une structure de score plus détaillée
   const [archers, setArchers] = useState(() => {
-    console.log("Initializing state..."); // Nouveau
-    const savedData = localStorage.getItem("archersData");
-    console.log("Saved data:", savedData); // Nouveau
+    const savedData = window.localStorage.getItem("archersData");
+    console.log(
+      "%c Loading Data:",
+      "background: #222; color: #bada55",
+      savedData
+    );
     if (savedData) {
       return JSON.parse(savedData);
     }
