@@ -18,9 +18,9 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": "/archer-scoring-pwa/",
+  "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff",
-  "scope": "/archer-scoring-pwa/"
+  "scope": "."
 }
