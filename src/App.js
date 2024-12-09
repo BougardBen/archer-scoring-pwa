@@ -2,11 +2,8 @@ import { useState } from "react";
 
 const saveState = (newState) => {
   window.localStorage.setItem("archersData", JSON.stringify(newState));
-  console.log("%c State Saved:", "background: #222; color: #bada55", newState);
 };
 const ArcherScoringApp = () => {
-  console.log("Testing storage:", {
-    write: (() => {
       try {
         window.localStorage.setItem("test", "test");
         const result = window.localStorage.getItem("test");
@@ -14,16 +11,10 @@ const ArcherScoringApp = () => {
       } catch (e) {
         return `Error: ${e.message}`;
       }
-    })(),
-  });
+  };
   // État pour stocker les archers avec une structure de score plus détaillée
   const [archers, setArchers] = useState(() => {
-    const savedData = window.localStorage.getItem("archersData");
-    console.log(
-      "%c Loading Data:",
-      "background: #222; color: #bada55",
-      savedData
-    );
+    const savedData = window.localStorage.getItem("archersData");    
     if (savedData) {
       return JSON.parse(savedData);
     }

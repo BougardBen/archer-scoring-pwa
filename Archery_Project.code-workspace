@@ -5,13 +5,9 @@
 	},
 	{
 		"path": "../TutoJS"
-	},
-	{
-		"path": "../First-js-project"
-	},
-	{
-		"path": "C:/Users/Lenovo/Appli_Archer/archer-scoring-pwa"
 	}
 ],
-  "settings": {}
+  "settings": {
+    "liveServer.settings.multiRootWorkspaceName": "TutoJS"
+  }
 }
