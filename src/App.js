@@ -4,7 +4,7 @@ const saveState = (newState) => {
   window.localStorage.setItem("archersData", JSON.stringify(newState));
   console.log("%c State Saved:", "background: #222; color: #bada55", newState);
 };
-const ArcherScringApp = () => {
+const ArcherScoringApp = () => {
   console.log("Testing storage:", {
     write: (() => {
       try {
@@ -16,7 +16,7 @@ const ArcherScringApp = () => {
       }
     })(),
   });
-};
+
   // État pour stocker les archers avec une structure de score plus détaillée
   const [archers, setArchers] = useState(() => {
     const savedData = window.localStorage.getItem("archersData");
