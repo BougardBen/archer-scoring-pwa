@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/archer-scoring-pwa/static/css/main.2cd8c39c.css",
-    "main.js": "/archer-scoring-pwa/static/js/main.63f3dbca.js",
+    "main.js": "/archer-scoring-pwa/static/js/main.d96289a0.js",
     "index.html": "/archer-scoring-pwa/index.html",
     "main.2cd8c39c.css.map": "/archer-scoring-pwa/static/css/main.2cd8c39c.css.map",
-    "main.63f3dbca.js.map": "/archer-scoring-pwa/static/js/main.63f3dbca.js.map"
+    "main.d96289a0.js.map": "/archer-scoring-pwa/static/js/main.d96289a0.js.map"
   },
   "entrypoints": [
     "static/css/main.2cd8c39c.css",
-    "static/js/main.63f3dbca.js"
+    "static/js/main.d96289a0.js"
   ]
 }
