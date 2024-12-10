@@ -56,16 +56,19 @@ const ArcherScoringApp = () => {
   const [editingArcherId, setEditingArcherId] = useState(null);
   // Fonctions de réinitialisation
   const resetAllScores = () => {
-    const newState = archers.map((archer) => ({
-      ...archer,
-      totalScore: 0,
-      targets: Array(21)
-        .fill()
-        .map(() => ({
-          points: [],
-          subtotal: 0,
-        })),
-    }));
+    const newState = Array(10)
+      .fill()
+      .map((_, index) => ({
+        id: index + 1,
+        name: `Archer ${index + 1}`,
+        totalScore: 0,
+        targets: Array(21)
+          .fill()
+          .map(() => ({
+            points: [],
+            subtotal: 0,
+          })),
+      }));
     setArchers(newState);
     saveState(newState);
   };
