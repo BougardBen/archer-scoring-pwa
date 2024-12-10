@@ -3,18 +3,18 @@
   "name": "Archer Scoring PWA",
   "icons": [
     {
-      "src": "Logo_Appli_4.jpg",
+      "src": "BAS_Logo.png",
       "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/jpg"
+      "type": "image/png"
     },
     {
-      "src": "Logo_Appli_4.jpg",
-      "type": "image/jpg",
+      "src": "BAS_Logo.png",
+      "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "Logo_Appli_4.jpg",
-      "type": "image/jpg",
+      "src": "BAS_Logo.png",
+      "type": "image/png",
       "sizes": "512x512"
     }
   ],
